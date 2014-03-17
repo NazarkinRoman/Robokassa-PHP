@@ -80,17 +80,29 @@ class Robokassa {
 	}
 
 	/**
-	* Проверка оплаты. Сравнение хеша
+	* Проверка исполнения операции. Сравнение хеша
  	*
    	* @param string $hash значение SignatureValue, переданное кассой на Result URL
+	* @param boolean $checkSuccess проверка параметров в скрипте завершения операции (SuccessURL)
    	* @return boolean $hashValid
 	*/
-	public function checkHash($hash)
+	public function checkHash($hash, $checkSuccess = false)
 	{
 		$customVars = $this->getCustomValues();
-		$hashGenerated = md5("{$this->OutSum}:{$this->InvId}:{$this->password2}{$customVars}");
+		$password = $checkSuccess ? $this->password1 :$this->password2;
+		$hashGenerated = md5("{$this->OutSum}:{$this->InvId}:{$password}{$customVars}");
 
 		return (strtolower($hash) == $hashGenerated);
+	}
+
+	/**
+	 * Проверка завершения операции (проверка оплаты). Сравнение хеша
+	 *
+	 * @param string $hash значение SignatureValue, переданное кассой на Result URL
+	 * @return boolean $hashValid
+	 */
+	public function checkSuccess($hash) {
+		return $this->checkHash($hash, true);
 	}
 
 	/**
