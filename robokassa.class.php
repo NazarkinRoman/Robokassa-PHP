@@ -107,6 +107,8 @@ class Robokassa {
 		{
 			foreach($this->customVars as $k => $v)
 				$customVars[$k] = $k . '=' . $v;
+				
+			sort($customVars);
 
 			if($url === TRUE)
 				$out = '&' . join('&', $customVars);
