@@ -11,7 +11,7 @@
  * GitHub:
  * https://github.com/NazarkinRoman
  * ===================================
-*/
+ */
 
 /* простой пример инициализации оплаты */
 $kassa = new Robokassa('merchant_login', 'pass1', 'pass2');
@@ -22,9 +22,9 @@ $kassa->IncCurrLabel = 'WMRM';
 $kassa->Desc         = 'Тестовая оплата';
 
 $kassa->addCustomValues(array(
-    'shp_user' => $userId, // все ключи массива должны быть с префиксом shp_
-    'shp_someData' => 'someValue'
-));
+        'shp_user'     => $userId, // все ключи массива должны быть с префиксом shp_
+        'shp_someData' => 'someValue'
+    ));
 
 /* редирект на сайт робокассы */
-header('Location: ' . $kassa->getRedirectURL());
+header('Location: '.$kassa->getRedirectURL());
