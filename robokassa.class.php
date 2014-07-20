@@ -13,8 +13,7 @@
  * ===================================
  */
 
-class Robokassa
-{
+class Robokassa {
 
     private $login, $password1, $password2,
     $endpoint   = 'https://merchant.roboxchange.com/Index.aspx?',
@@ -32,13 +31,13 @@ class Robokassa
 	 *
 	 * @return none
 	 */
-    public function __construct($login, $pass1, $pass2, $test = false)
-    {
+    public function __construct($login, $pass1, $pass2, $test = false) {
         $this->login     = $login;
         $this->password1 = $pass1;
         $this->password2 = $pass2;
 
-        if ($test) {$this->endpoint = 'http://test.robokassa.ru/Index.aspx?';
+        if ($test) {
+            $this->endpoint = 'http://test.robokassa.ru/Index.aspx?';
         }
     }
 
@@ -48,8 +47,7 @@ class Robokassa
 	 * @param array $vars именованный массив с переменными(названия указывать с суффиксом shp_)
 	 * @return none
 	 */
-    public function addCustomValues($vars)
-    {
+    public function addCustomValues($vars) {
         if (!is_array($vars)) {throw new Exception('Function `addCustomValues` take only array`s');
         }
 
@@ -63,8 +61,7 @@ class Robokassa
 	 *
 	 * @return string $url
 	 */
-    public function getRedirectURL()
-    {
+    public function getRedirectURL() {
         $customVars   = $this->getCustomValues();
         $hash         = md5("{$this->login}:{$this->OutSum}:{$this->InvId}:{$this->password1}{$customVars}");
         $invId        = ($this->InvId !== '')?'&InvId='.$this->InvId:'';
@@ -89,8 +86,7 @@ class Robokassa
 	 * @param boolean $checkSuccess проверка параметров в скрипте завершения операции (SuccessURL)
 	 * @return boolean $hashValid
 	 */
-    function checkHash($hash, $checkSuccess = false)
-{
+    function checkHash($hash, $checkSuccess = false) {
         $customVars    = $this->getCustomValues();
         $password      = $checkSuccess?$this->password1:$this->password2;
         $hashGenerated = md5("{$this->OutSum}:{$this->InvId}:{$password}{$customVars}");
@@ -104,8 +100,7 @@ class Robokassa
 	 * @param string $hash значение SignatureValue, переданное кассой на Result URL
 	 * @return boolean $hashValid
 	 */
-    function checkSuccess($hash)
-{
+    function checkSuccess($hash) {
         return $this->checkHash($hash, true);
     }
 
@@ -115,8 +110,7 @@ class Robokassa
 	 * @param boolean $url генерация строки для использования в URL true/false
 	 * @return string
 	 */
-    function getCustomValues($url = false)
-{
+    function getCustomValues($url = false) {
         $out        = '';
         $customVars = array();
         if (!empty($this->customVars)) {
